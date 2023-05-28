@@ -4,8 +4,34 @@ on:
   workflow_dispatch:
 
 jobs:
+  install:
+    name: Install Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.2.0
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        shell: bash
+        run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
+      - uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node
+      - name: Install Dependencies 
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: npm ci
+        
   test:
-    name: Install Dependencies and Test
+    name: Test Cases
+    needs: install
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
