@@ -142,7 +142,7 @@ jobs:
         uses: easingthemes/ssh-deploy@main
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          REMOTE_HOST: ${{ secrets.SSH_HOST_GCP }}
+          REMOTE_HOST: ${{ secrets.SSH_HOST_AWS }}
           REMOTE_USER: ${{ secrets.USERNAME }}
           SOURCE: "build/"
           TARGET: "/var/www/html/"
