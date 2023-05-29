@@ -90,13 +90,13 @@ jobs:
           if-no-files-found: error
           retention-days: 1
         
-#   security:
-#     name: Snyk Check
-#     runs-on: ubuntu-latest
-#     needs: build
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@master
+  security:
+    name: Snyk Check
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
 #       - name: Run Snyk to check for vulnerabilities
 #         uses: snyk/actions/node@master
 #         env:
@@ -104,7 +104,7 @@ jobs:
   
   deploy-gcp:
     name: Deploy GCP
-    needs: build
+    needs: [ build, test ]
     runs-on: ubuntu-latest
     steps:
       - name: Download a Build Artifact
@@ -130,7 +130,7 @@ jobs:
 
   deploy-aws:
     name: Deploy AWS
-    needs: build
+    needs: [ build, test ]
     runs-on: ubuntu-latest
     steps:
       - name: Download a Build Artifact
