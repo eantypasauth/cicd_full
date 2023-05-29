@@ -104,7 +104,7 @@ jobs:
   
   deploy-gcp:
     name: Deploy GCP
-    needs: [ build, test ]
+    needs: [ build, security ]
     runs-on: ubuntu-latest
     steps:
       - name: Download a Build Artifact
@@ -130,7 +130,7 @@ jobs:
 
   deploy-aws:
     name: Deploy AWS
-    needs: [ build, test ]
+    needs: [ build, security ]
     runs-on: ubuntu-latest
     steps:
       - name: Download a Build Artifact
